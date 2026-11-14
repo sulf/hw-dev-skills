@@ -1,11 +1,6 @@
 ---
 name: fnb58
-description: >
-  Read live voltage, current and power from a FNIRSI FNB58 USB power meter over
-  Bluetooth LE, log it to CSV, and summarize (mean/min/max, mWh, mAh). Use when the
-  user wants to measure, monitor or log how much power a USB device draws, or mentions
-  FNB58, FNIRSI, USB power meter, or USB tester. Triggers: "power draw", "how much
-  current", "measure power", "battery life estimate", "log current while I ...".
+description: Read live voltage, current and power from a FNIRSI FNB58 USB power meter over Bluetooth LE, log it to CSV, and summarize (mean/min/max, mWh, mAh). Use when the user wants to measure, monitor or log how much power a USB device draws, or mentions FNB58, FNIRSI, USB power meter, or USB tester. Triggers: "power draw", "how much current", "measure power", "battery life estimate", "log current while I ...".
 ---
 
 # FNB58 USB power meter (BLE)
@@ -31,11 +26,12 @@ uv run --script $S log --address AA:BB:CC:DD:EE:FF -d 60 -o out.csv
   Say so if the user cares about transients.
 - The summary gives V/I/P mean, min, max and SD, plus energy (mWh) and charge (mAh)
   integrated over the capture, and the latest D+/D− voltages and load resistance.
-- Put CSVs in the scratchpad or a temp dir unless the user names a location.
-- For a "measure while I do X" request, run `log -d 0 -o file.csv` with
-  `run_in_background`, have the user do X, stop it with TaskStop (SIGTERM saves the
-  CSV and prints the summary), then analyze the CSV.
-- Chart the CSV when a trend matters (load the dataviz skill first).
+- Put CSVs in a temp/scratch dir unless the user names a location.
+- For a "measure while I do X" request, start `log -d 0 -o file.csv` as a
+  background process (e.g. `... & echo $! > /tmp/fnb58.pid`), have the user do X,
+  then `kill -TERM` that PID. SIGTERM/SIGINT saves the CSV and prints the summary.
+  Do not use `pkill -f`, which can match the calling shell. Then analyze the CSV.
+- Chart the CSV when a trend matters, using a charting/dataviz skill if one is available.
 - To estimate battery life: battery mAh ÷ mean mA. Note that this measures at 5 V
   USB input, so on-board regulator losses are included.
 
