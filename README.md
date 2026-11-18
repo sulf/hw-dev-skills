@@ -5,6 +5,7 @@ Agent skills for hardware development work. They work with [Claude Code](https:/
 | Skill | What it does |
 |---|---|
 | [`fnb58`](skills/fnb58) | Reads a FNIRSI FNB58 USB power meter over Bluetooth LE: live V/I/P, CSV logging, and energy and charge summaries. Includes a decode of the reverse-engineered BLE protocol. |
+| [`pr-hw-validation`](skills/pr-hw-validation) | Runs the same on-device checks against a firmware PR's base build and its head build, then compares them. Detects attached hardware read-only, and always asks before touching it, with an option to skip. |
 
 ## Install
 
